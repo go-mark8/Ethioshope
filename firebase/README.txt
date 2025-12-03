@@ -1,0 +1,1 @@
+Place firebase.json and other Firebase config files here.
