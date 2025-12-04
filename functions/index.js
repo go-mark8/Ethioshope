@@ -1,67 +1,40 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const sharp = require("sharp");
+const {Storage} = require("@google-cloud/storage");
+
 admin.initializeApp();
+const storage = new Storage();
 
-exports.onChatMessage = functions.firestore.document('threads/{threadId}/messages/{messageId}')
-  .onCreate(async (snapshot, context) => {
-    const message = snapshot.data();
-    const threadId = context.params.threadId;
+exports.generateThumbnail = functions.storage.object().onFinalize(async (object) => {
+  const fileBucket = object.bucket;
+  const filePath = object.name;
+  const contentType = object.contentType;
 
-    const threadSnap = await admin.firestore().collection('threads').doc(threadId).get();
-    const thread = threadSnap.data();
-    const participants = thread.participants || [];
+  // Skip non-images
+  if (!contentType.startsWith("image/")) return null;
 
-    const senderId = message.from;
-    const otherUsers = participants.filter(uid => uid !== senderId);
+  // Skip if already thumbnail
+  if (filePath.includes("thumbnails/")) return null;
 
-    let tokens = [];
-    for (const uid of otherUsers) {
-      const u = await admin.firestore().collection('users').doc(uid).get();
-      const data = u.data();
-      if (data && data.tokens) {
-        tokens.push(...data.tokens);
-      }
-    }
-    if (tokens.length === 0) return null;
+  const bucket = storage.bucket(fileBucket);
+  const fileName = filePath.split("/").pop();
+  const tempFilePath = `/tmp/${fileName}`;
+  const thumbFilePath = `thumbnails/${fileName}`;
 
-    const payload = {
-      notification: {
-        title: 'New message',
-        body: message.text ? message.text : '📷 Image received',
-      },
-      data: {
-        type: 'chat',
-        threadId: threadId,
-      }
-    };
+  await bucket.file(filePath).download({destination: tempFilePath});
 
-    await admin.messaging().sendToDevice(tokens, payload);
-    return null;
+  // Create thumbnail
+  await sharp(tempFilePath)
+    .resize({width: 400})
+    .jpeg({quality: 70})
+    .toFile(tempFilePath + "_thumb.jpg");
+
+  // Upload thumbnail
+  await bucket.upload(tempFilePath + "_thumb.jpg", {
+    destination: thumbFilePath,
+    contentType: "image/jpeg",
   });
 
-exports.onNewListing = functions.firestore.document('listings/{listingId}')
-  .onCreate(async (snapshot, context) => {
-    const listing = snapshot.data();
-
-    const usersSnap = await admin.firestore().collection('users').get();
-    let tokens = [];
-    usersSnap.forEach(doc => {
-      const data = doc.data();
-      if (data.tokens) tokens.push(...data.tokens);
-    });
-    if (tokens.length === 0) return null;
-
-    const payload = {
-      notification: {
-        title: 'New listing posted',
-        body: `${listing.title} — ETB ${listing.price}`,
-      },
-      data: {
-        type: 'listing',
-        listingId: context.params.listingId,
-      }
-    };
-
-    await admin.messaging().sendToDevice(tokens, payload);
-    return null;
-  });
+  return bucket.file(thumbFilePath).makePublic();
+});
