@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -29,6 +29,15 @@ jobs:
         run: |
           cd flutter_app
           flutter pub get
+
+      - name: Auto-increment version
+        run: |
+          cd flutter_app
+          VERSION_LINE=$(grep version pubspec.yaml)
+          VERSION_NAME=$(echo $VERSION_LINE | cut -d+ -f1 | cut -d' ' -f2)
+          VERSION_CODE=$(echo $VERSION_LINE | cut -d+ -f2)
+          NEW_VERSION_CODE=$((VERSION_CODE + 1))
+          sed -i "s/version: .*/version: $VERSION_NAME+$NEW_VERSION_CODE/" pubspec.yaml
 
       - name: Decode Keystore
         run: |
@@ -55,13 +64,10 @@ jobs:
           cd flutter_app
           flutter build apk --release
 
-      - name: Upload Build Artifacts
-      
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-       
-         name: ethioshop-builds
-         
-         path: |
-           flutter_app/build/app/outputs/flutter-apk/app-release.apk
-           flutter_app/build/app/outputs/bundle/release/app-release.aab
+          name: ethioshoper-builds
+          path: |
+            flutter_app/build/app/outputs/flutter-apk/app-release.apk
+            flutter_app/build/app/outputs/bundle/release/app-release.aab
