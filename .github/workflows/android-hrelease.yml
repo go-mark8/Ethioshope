@@ -1,5 +1,4 @@
-name: Build ETHIOM8 Android APK & AAB
-
+name: Build ETHIOM8 Android APK
 on:
   push:
     branches: [ "main" ]
