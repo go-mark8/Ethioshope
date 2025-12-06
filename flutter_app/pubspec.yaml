@@ -1,28 +1,53 @@
-name: ethio_app
-description: ETHIO Flutter starter combined package
-publish_to: 'none'
+name: ethioshoper
+description: ETHIOSHOPER Flutter marketplace + jobs app
+publish_to: "none"
+
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.10.0
-  firebase_auth: ^4.6.0
-  cloud_firestore: ^4.8.0
-  firebase_storage: ^11.0.0
-  firebase_messaging: ^14.4.0
+
+  cupertino_icons: ^1.0.6
+
+  # Firebase
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
+  firebase_storage: ^12.0.0
+  firebase_messaging: ^15.0.0
+
+  # State & UI
   provider: ^6.0.5
-  image_picker: ^0.8.7+4
-  flutter_image_compress: ^1.1.0
-  uuid: ^3.0.7
-  lottie: ^2.3.0
-  connectivity_plus: ^4.0.0
-  flutter_local_notifications: ^12.0.0
+  intl: ^0.19.0
+
+  # UI components
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
+  lottie: ^3.0.0
+
+  # Image & Upload
+  image_picker: ^1.0.7
+  cached_network_image: ^3.3.1
+
+  # Maps (Optional)
+  google_maps_flutter: ^2.6.1
+
+  # Utilities
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
+
   assets:
-    - assets/lottie/ethio_splash.json
+    - assets/images/
+    - assets/icons/
+    - assets/lottie/
