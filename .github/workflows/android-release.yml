@@ -35,7 +35,7 @@ jobs:
           sudo apt update
           gem install fastlane -NV
           cd flutter_app/android
-          bundle install || true
+          || true
 
       - name: Install Dependencies
         run: |
@@ -73,7 +73,6 @@ jobs:
           KEY_ALIAS=${KEY_ALIAS}
           KEY_PASSWORD=${KEYSTORE_PASSWORD}
           EOF
-
 
       - name: Build APK
         working-directory: flutter_app/android/
