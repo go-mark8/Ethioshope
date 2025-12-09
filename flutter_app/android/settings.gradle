@@ -1,14 +1,14 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 plugins {
-    // Flutter automatically provides the correct version internally
-    id "dev.flutter.flutter-gradle-plugin"
+    // Correct plugin for Flutter 3.22+
+    id "dev.flutter.flutter-plugin-loader"
 }
 
 include(":app")
@@ -18,6 +18,5 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // if needed
     }
 }
