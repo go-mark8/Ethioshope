@@ -45,13 +45,4 @@ flutter:
   assets:
     - assets/lottie/
     - assets/icons/
-    - assets/branding/    sdk: flutter
-  flutter_lints: ^3.0.1
-
-flutter:
-  uses-material-design: true
-
-  # 🖼 Assets Section
-  # Make sure you create an 'assets' folder in your project root if you use this!
-  # assets:
-  #   - assets/images/
+    - assets/branding/
