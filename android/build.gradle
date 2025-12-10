@@ -1,18 +1,20 @@
 buildscript {
-    ext.kotlin_version = '1.8.21'
+    // 🔑 STEP 1: Set a modern, compatible Kotlin version (1.8.20 is a safe choice)
+    ext.kotlin_version = '1.8.20'
+    
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        // Standard Android Gradle Plugin
+        // 🔑 STEP 2: Use a compatible Android Gradle Plugin (AGP) version (7.4.2 is stable with Kotlin 1.8.20)
         classpath 'com.android.tools.build:gradle:7.4.2'
         
         // Kotlin support
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         
-        // 🔑 REQUIRED: Google Services Plugin for Firebase
+        // 🔑 STEP 3: Firebase Google Services Plugin (Needed for Firebase)
         classpath 'com.google.gms:google-services:4.4.0'
     }
 }
@@ -24,6 +26,7 @@ allprojects {
     }
 }
 
+// Cleans the build directory when you run `gradle clean`
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
