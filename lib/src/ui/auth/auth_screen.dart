@@ -10,7 +10,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+ // final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
 
   // Placeholder for Google Sign In
