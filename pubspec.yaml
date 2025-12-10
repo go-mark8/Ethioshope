@@ -1,7 +1,6 @@
 name: ethio_shop
 description: The ETHIO🛍 Adaptive Marketplace application.
-publish_to: 'none' # Prevents accidental publishing to pub.dev
-
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -11,30 +10,42 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # 🎨 UI Icons
+  # 🎨 Icons
   cupertino_icons: ^1.0.6
 
-  # 🔑 Firebase Core Packages
-  # These are required to connect your app to the Firebase Console
+  # 🔑 Firebase Packages
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.2
   cloud_firestore: ^4.13.5
   firebase_storage: ^11.5.6
 
-  # 🗺 Location and Maps
-  # Required for the Cars and Property map views
+  # 🗺 Maps & Location
   google_maps_flutter: ^2.5.0
   geolocator: ^10.1.0
 
-  # 💬 UI Utilities & Media
-  image_picker: ^1.0.4          # To upload photos for listings
-  cached_network_image: ^3.3.0  # To load images faster and save data
-  intl: ^0.18.1                 # For date formatting (e.g., "Posted 2 hrs ago")
-  url_launcher: ^6.2.2          # For the "Call Seller" button
+  # 🛠 Utilities (Fixes your 'URI doesn't exist' errors)
+  connectivity_plus: ^5.0.2  # Required for checking internet
+  lottie: ^3.1.0             # Required for animations
+  
+  # 🖼 Media
+  image_picker: ^1.0.4
+  cached_network_image: ^3.3.0
+  intl: ^0.18.1
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+  # ⚠️ Make sure to create these folders in your project root!
+  assets:
+    - assets/lottie/
+    - assets/icons/
+    - assets/branding/    sdk: flutter
   flutter_lints: ^3.0.1
 
 flutter:
