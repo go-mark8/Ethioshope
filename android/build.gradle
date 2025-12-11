@@ -1,6 +1,6 @@
 buildscript {
     // 🔑 STEP 1: Set a modern, compatible Kotlin version (1.8.20 is a safe choice)
-    ext.kotlin_version = '2.2.21'
+    ext.kotlin_version = '2.1.0'
     
     repositories {
         google()
@@ -9,7 +9,7 @@ buildscript {
 
     dependencies {
         // 🔑 STEP 2: Use a compatible Android Gradle Plugin (AGP) version (7.4.2 is stable with Kotlin 1.8.20)
-        classpath 'com.android.tools.build:gradle:8.13.2'
+        classpath 'com.android.tools.build:gradle:8.12.0'
         
         // Kotlin support
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
