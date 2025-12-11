@@ -1,6 +1,6 @@
 buildscript {
     // 🔑 STEP 1: Set a modern, compatible Kotlin version (1.8.20 is a safe choice)
-    ext.kotlin_version = '1.8.20'
+    ext.kotlin_version = '2.2.21'
     
     repositories {
         google()
@@ -9,13 +9,13 @@ buildscript {
 
     dependencies {
         // 🔑 STEP 2: Use a compatible Android Gradle Plugin (AGP) version (7.4.2 is stable with Kotlin 1.8.20)
-        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath 'com.android.tools.build:gradle:8.13.2'
         
         // Kotlin support
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         
         // 🔑 STEP 3: Firebase Google Services Plugin (Needed for Firebase)
-        classpath 'com.google.gms:google-services:4.4.0'
+        classpath 'com.google.gms:google-services:4.4.4'
     }
 }
 
