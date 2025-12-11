@@ -29,11 +29,11 @@ jobs:
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
           
-      - name: ☕ Set up JDK 17 (Required for Android Build)
+      - name: ☕ Set up JDK 21 (Required for Android Build)
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '21'
           
       # --- END FIREBASE DEPLOYMENT SETUP ---
 
