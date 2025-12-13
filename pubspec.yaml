@@ -15,16 +15,15 @@ dependencies:
   cupertino_icons: ^1.0.6
 
   # 🔑 Firebase Packages (Updated to latest stable versions)
-
   # ... other packages
-
-  # 🔑 Firebase Packages (SYNCHRONIZED AND UPDATED)
-  firebase_core: ^6.1.1       # Updated to ^6.1.1 to resolve conflict
-  firebase_auth: ^6.1.2       
-  cloud_firestore: ^5.6.14    # Updated significantly to match the new core version
-  firebase_storage: ^12.1.0   
-
-  # ... rest of your dependencies     # New: ^11.5.6 -> ^12.1.0
+  # 🔑 Firebase Packages (SYNCHRONIZED TO THE LATEST STABLE SET)
+  # cloud_firestore: 6.1.0 is compatible with firebase_core and dart >=3.2.0
+  firebase_core: ^4.2.1       # Keeping it within the latest compatible 4.x range
+  firebase_auth: ^6.1.2       # Latest stable
+  cloud_firestore: ^6.1.0     # Corrected version to the latest stable release
+  firebase_storage: ^12.1.0   # Latest stable
+  
+  # ... rest of your dependencies  # ... rest of your dependencies     # New: ^11.5.6 -> ^12.1.0
 
   # 🗺 Maps & Location (Updated to latest stable versions)
   google_maps_flutter: ^2.14.0  # New: ^2.5.0 -> ^2.14.0
