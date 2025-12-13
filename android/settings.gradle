@@ -20,12 +20,14 @@ pluginManagement {
 
 // Define plugins that are used in the project (like Android application, Kotlin, etc.)
 plugins { 
-// Upgraded for Android 16KB pages + latest SDKs // AGP 8.12.0, Kotlin 2.1.0 (ensure Flutter Gradle plugin supports these) id "dev.flutter.flutter-plugin-loader" version "1.0.0" id "com.android.application" version "8.12.0" apply false id "org.jetbrains.kotlin.android" version "2.1.0" apply false}
-// AGP 8.12.0, Kotlin 2.1.0 (ensure Flutter Gradle plugin supports these) id "dev.flutter.flutter-plugin-loader" version "1.0.0" id "com.android.application" version "8.12.0" apply false id "org.jetbrains.kotlin.android" version "2.1.0" apply false// 🔑 THE CRITICAL LINE THAT FIXES YOUR ERROR:
+    // This loads the necessary plugins for Flutter
     id "dev.flutter.flutter-plugin-loader" version "1.0.0" 
+    
+    // 🔑 Android Gradle Plugin (AGP) for Java 21/Android 16KB support
     id "com.android.application" version "8.12.0" apply false 
+    
+    // 🔑 Kotlin Gradle Plugin 
     id "org.jetbrains.kotlin.android" version "2.1.0" apply false
-
 }
 
 include ':app'
