@@ -69,5 +69,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ethio-shop-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/papp-release.apk
           retention-days: 5 # Keep artifact for 5 days
+          
