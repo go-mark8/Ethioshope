@@ -1,6 +1,7 @@
+import 'package:ethio_shop/src/ui/auth/widgets/google_sign_in_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-import '../../theme/app_theme.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -10,74 +11,64 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
- // final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
 
-  // Placeholder for Google Sign In
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
-    // Note: Real Google Sign-in requires the google_sign_in package setup.
-    // This is a placeholder that simulates a delay.
-    await Future.delayed(const Duration(seconds: 2)); 
-    
-    setState(() => _isLoading = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Google Sign-In not fully configured yet")),
-    );
+
+    try {
+      // Trigger the Google authentication flow.
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // If the user cancels the flow, do nothing.
+      if (googleUser == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      // Obtain the auth details from the request.
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Create a new credential for Firebase.
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the credential.
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // After successful sign-in, navigate to the home screen.
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to sign in with Google: ${e.toString()}")),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Spacer(),
-            const Text(
-              "ETHIO🛍",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryGreen,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              "Buy, Sell, and Find Jobs in Ethiopia",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 16),
-            ),
-            const Spacer(),
-            
-            // Google Button
-            OutlinedButton.icon(
-              onPressed: _isLoading ? null : _signInWithGoogle,
-              icon: const Icon(Icons.g_mobiledata, size: 28),
-              label: const Text("Continue with Google"),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                side: const BorderSide(color: Colors.grey),
-                foregroundColor: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 16),
-            
-            // Phone Button (Visual Only)
-            ElevatedButton.icon(
-              onPressed: () {
-                // Future implementation: Navigate to OTP Screen
-              },
-              icon: const Icon(Icons.phone),
-              label: const Text("Continue with Phone Number"),
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
+        padding: const EdgeInsets.all(24.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Spacer(),
+          const Text("Welcome to ETHIO🛍", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          const Text("Your one-stop online marketplace.", style: TextStyle(fontSize: 16, color: Colors.grey)),
+          const Spacer(),
+          GoogleSignInButton(onPressed: _signInWithGoogle, isLoading: _isLoading),
+          const SizedBox(height: 20),
+        ]),
       ),
     );
   }

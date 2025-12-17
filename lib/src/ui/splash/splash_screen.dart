@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart'; // Fixed import
-//import 'package:lottie/lottie.dart'; // Fixed import
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:ethio_shop/src/services/connectivity_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lottie/lottie.dart';
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
@@ -11,42 +13,73 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // Use the new connectivity service.
+  final _connectivityService = ConnectivityService();
+  late final StreamSubscription<ConnectivityStatus> _connectivitySubscription;
+
   @override
   void initState() {
     super.initState();
-    _checkInternetAndNavigate();
+    // Start listening to connectivity changes.
+    _connectivitySubscription = _connectivityService.status.listen(_handleConnectivityChange);
+    // Perform the initial check after a delay.
+    _delayedNavigation();
   }
 
-  Future<void> _checkInternetAndNavigate() async {
-    // 1. Check for Internet Connection
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    
-    // Simulate a delay for the splash animation (3 seconds)
-    await Future.delayed(const Duration(seconds: 3));
+  @override
+  void dispose() {
+    // Cancel the subscription to avoid memory leaks.
+    _connectivitySubscription.cancel();
+    _connectivityService.dispose();
+    super.dispose();
+  }
 
-    if (connectivityResult == ConnectivityResult.none) {
-      _showNoInternetDialog();
-    } else {
-      // 2. Navigate to Home/Auth based on your app logic
-      // Note: Make sure '/auth' route is defined in main.dart
-      if (mounted) {
+  Future<void> _delayedNavigation() async {
+    // Wait for a fixed duration to ensure the splash animation is visible.
+    await Future.delayed(const Duration(seconds: 3));
+    _checkConnectionAndNavigate();
+  }
+
+  Future<void> _checkConnectionAndNavigate() async {
+    // Manually check the initial connection status.
+    final result = await Connectivity().checkConnectivity();
+    final hasConnection = !result.contains(ConnectivityResult.none);
+    _handleConnectivityChange(
+        hasConnection ? ConnectivityStatus.connected : ConnectivityStatus.disconnected);
+  }
+
+  void _handleConnectivityChange(ConnectivityStatus status) {
+    if (!mounted) return;
+
+    if (status == ConnectivityStatus.connected) {
+      // If connected, check auth state to decide the destination.
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // If user is logged in, go to the home screen.
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        // If user is not logged in, go to the auth screen.
         Navigator.pushReplacementNamed(context, '/auth');
       }
+    } else {
+      // If there's no connection, show the dialog.
+      _showNoInternetDialog();
     }
   }
 
-  void _showNoInternetDialog() {
+  Future<void> _showNoInternetDialog() async {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: const Text("No Internet"),
-        content: const Text("Please check your connection and try again."),
+        title: const Text("No Internet Connection"),
+        content: const Text("Please check your network settings and try again."),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
-              _checkInternetAndNavigate(); // Retry
+              Navigator.pop(context); // Close the dialog
+              // Immediately retry the connection check upon user request.
+              _checkConnectionAndNavigate();
             },
             child: const Text("Retry"),
           ),
@@ -63,16 +96,13 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // LOTTIE ANIMATION
-            // If you have an animation file, uncomment the lines below:
-            // Lottie.asset(
-            //   'assets/lottie/splash_animation.json', 
-            //   width: 200, 
-            //   height: 200
-            // ),
-            
-            // For now, we use a simple Icon until you add the JSON file
-            const Icon(Icons.shopping_bag, size: 100, color: Color(0xFF009A44)),
+            // LOTTIE ANIMATION - Assuming you have a file at this path.
+            // If not, replace with an Image.asset or another widget.
+            Lottie.asset(
+              'assets/lottie/splash_animation.json',
+              width: 200,
+              height: 200,
+            ),
             
             const SizedBox(height: 20),
             const Text(

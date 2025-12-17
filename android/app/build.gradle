@@ -36,7 +36,8 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            // You should configure a separate signing configuration for release builds.
+            signingConfig signingConfigs.debug // TODO: Remove this line and set up a release signing config.
         }
     }
 

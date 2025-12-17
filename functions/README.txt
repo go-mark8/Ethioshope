@@ -1,1 +1,0 @@
-Place your Cloud Functions code (index.js, package.json).
