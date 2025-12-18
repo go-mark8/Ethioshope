@@ -1,10 +1,19 @@
 name: 🛠️ Build Flutter Debug APK
 
-# Global Environment Variables from your main workflow
-- on:
--  workflow_dispatch:
-
-    steps:
+# 1. TRIGGER: Allow manual trigger from the GitHub Actions tabon:
+on:
+ workflow_dispatch:
+#f
+env:
+ FLUTTER_VERSION: '3.22.x'
+ JAVA_VERSION: '21'
+    
+jobs:
+ build_debug_apk:
+   name: Build Debug APK
+   runs-on: ubuntu-latest
+   
+   steps:
       # --- SETUP ---
 
       - name: 1. ⬇️ Checkout Repository
