@@ -1,25 +1,38 @@
 name: 🛠️ Build Flutter Debug APK
 
-# 1. TRIGGER: Allow manual trigger from the GitHub Actions tabon:
+# 1. TRIGGER: Allow manual trigger from the GitHub Actions tab
 on:
- workflow_dispatch:
-#f
+  workflow_dispatch:
+
+# Global Environment Variables from your main workflow
 env:
- FLUTTER_VERSION: '3.22.x'
- JAVA_VERSION: '21'
-    
+  FLUTTER_VERSION: '3.22.x'
+  JAVA_VERSION: '21'
+
 jobs:
- build_debug_apk:
-   name: Build Debug APK
-   runs-on: ubuntu-latest
-   
-   steps:
+  build_debug_apk:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
       # --- SETUP ---
 
       - name: 1. ⬇️ Checkout Repository
         uses: actions/checkout@v4
 
-            # --- DEPENDENCIES ---
+      - name: 2. ☕ Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: 3. 💙 Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: false
+
+      # --- DEPENDENCIES ---
 
       - name: 4. Get Flutter Dependencies
         run: flutter pub get
@@ -35,15 +48,14 @@ jobs:
 
       - name: 6. 🏗️ Build An APK
         run: flutter clean 
+      # --- BUILD ---
 
-      - name: 6. 🏗️ Build
-        run: flutter build apk --debug
+      - name: 6. 🏗️ Build AndroidK
+        run: flutter pub 
 
-      # --- UPLOAD ARTIFACT ---
+       # --- BUILD ---
 
-      - name: 7. 💾 Upload Debug APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ethio_shop-debug-apk
-          path: build/app/outputs/flutter-apk/app-debug.apk # Standard debug APK output path
-          retention-days: 7
+      - name: 6. 🏗️ Buildd Debug APK
+        run: flutter get
+
+       # --- BUILD ---
