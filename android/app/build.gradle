@@ -6,10 +6,18 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// Fallbacks for Flutter-provided properties to avoid Gradle evaluation errors in CI
+// These use project properties when available (populated by Flutter tooling) and fall
+// back to safe defaults otherwise.
+def flutterVersionCode = project.hasProperty('flutter.versionCode') ? project.property('flutter.versionCode') : '1'
+def flutterVersionName = project.hasProperty('flutter.versionName') ? project.property('flutter.versionName') : '1.0.0'
+def flutterCompileSdk = project.hasProperty('flutter.compileSdkVersion') ? project.property('flutter.compileSdkVersion') : '33'
+def flutterTargetSdk = project.hasProperty('flutter.targetSdkVersion') ? project.property('flutter.targetSdkVersion') : '33'
+
 android {
     // Setting the application ID to match the one in your google-services.json
     namespace "com.ethio.shop" 
-    compileSdk flutter.compileSdkVersion
+    compileSdk flutterCompileSdk.toInteger()
 
     defaultConfig {
         // Set your application ID
@@ -17,9 +25,9 @@ android {
         
         // Minimum SDK version set to 21 for modern Flutter/Firebase/Google Maps support
         minSdkVersion 21
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutter.versionCode.toInteger()
-        versionName flutter.versionName
+        targetSdkVersion flutterTargetSdk.toInteger()
+        versionCode Integer.parseInt(flutterVersionCode.toString())
+        versionName flutterVersionName
 
         // Enable MultiDex for larger apps (common with Firebase)
         multiDexEnabled true
