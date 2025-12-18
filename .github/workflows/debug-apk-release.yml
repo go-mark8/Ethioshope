@@ -46,7 +46,21 @@ jobs:
 
       # --- BUILD ---
 
-      - name: 6. 🏗️ Build Android Debug APK
+      - name: 6. 🏗️ Build An APK
+        run: flutter clean 
+      # --- BUILD ---
+
+      - name: 6. 🏗️ Build AndroidK
+        run: flutter pub 
+
+       # --- BUILD ---
+
+      - name: 6. 🏗️ Buildd Debug APK
+        run: flutter get
+
+       # --- BUILD ---
+
+      - name: 6. 🏗️ Build
         run: flutter build apk --debug
 
       # --- UPLOAD ARTIFACT ---
