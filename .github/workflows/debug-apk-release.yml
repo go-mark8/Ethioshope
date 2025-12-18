@@ -1,8 +1,8 @@
 name: 🛠️ Build Flutter Debug APK
 
 # Global Environment Variables from your main workflow
--on: |
-workflow_dispatch
+-  on:
+-    workflow_dispatch:
 
     steps:
       # --- SETUP ---
