@@ -42,20 +42,4 @@ jobs:
       - name: 5. 🔑 Generate Debug Keystore
         run: |
           keytool -genkey -v -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-        shell: bash
-
-      # --- BUILD ---
-
-      - name: 6. 🏗️ Build An APK
-        run: flutter clean 
-      # --- BUILD ---
-
-      - name: 6. 🏗️ Build AndroidK
-        run: flutter pub 
-
-       # --- BUILD ---
-
-      - name: 6. 🏗️ Buildd Debug APK
-        run: flutter get
-
-       # --- BUILD ---
+        
