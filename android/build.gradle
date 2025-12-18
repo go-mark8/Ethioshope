@@ -23,3 +23,22 @@ allprojects {
         mavenCentral()
     }
 }
+
+// Ensure plugins that don't set compileSdk inherit our project's compileSdk
+ext.forceCompileSdk = 34 // <-- Update this if you want a different compileSdkVersion
+subprojects { subproject ->
+    afterEvaluate {
+        def androidExt = subproject.extensions.findByName('android')
+        if (androidExt != null) {
+            try {
+                if (androidExt.hasProperty('compileSdkVersion')) {
+                    androidExt.compileSdkVersion = rootProject.ext.forceCompileSdk
+                } else if (androidExt.hasProperty('compileSdk')) {
+                    androidExt.compileSdk = rootProject.ext.forceCompileSdk
+                }
+            } catch (ignored) {
+                // ignore plugin-specific issues
+            }
+        }
+    }
+}
