@@ -1,0 +1,25 @@
+// android/build.gradle (project level)
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Android Gradle Plugin — updated
+        classpath 'com.android.tools.build:gradle:8.1.1'
+
+        // Google Services plugin — required for `apply plugin: 'com.google.gms.google-services'` in app module
+        classpath 'com.google.gms:google-services:4.4.0'
+
+        // (Optional) Kotlin Gradle plugin if you use Kotlin
+        // classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
