@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">ETHIO🛍</string>
-    
-    <string name="facebook_app_id" translatable="false">YOUR_FB_ID</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fbYOUR_FB_ID</string>
-</resources>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="primaryBlack">#000000</color>
-    
-    <color name="logoGreen">#6AA84F</color> 
-    
-    <color name="splash_bg">#FFFFFF</color>
-    <color name="status_bar_color">#000000</color>
-</resources>
