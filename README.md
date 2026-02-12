@@ -96,7 +96,7 @@ ethioshop/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/ethioshop.git
+git clone [https://github.com/go-mark8/Ethioshope.git]
 cd ethioshop
 ```
 
